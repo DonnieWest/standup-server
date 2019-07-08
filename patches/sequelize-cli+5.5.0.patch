@@ -1,0 +1,217 @@
+diff --git a/node_modules/sequelize-cli/lib/assets/migrations/create-table.js b/node_modules/sequelize-cli/lib/assets/migrations/create-table.js
+index 1fd3e92..e4b507f 100644
+--- a/node_modules/sequelize-cli/lib/assets/migrations/create-table.js
++++ b/node_modules/sequelize-cli/lib/assets/migrations/create-table.js
+@@ -1,35 +1,31 @@
+-'use strict';
++export const up = (queryInterface, Sequelize) => {
++  return queryInterface
++    .createTable('<%= tableName %>', {
++      id: {
++        allowNull: false,
++        autoIncrement: true,
++        primaryKey: true,
++        type: Sequelize.INTEGER
++      },
+ 
+-module.exports = {
+-  up: (queryInterface, Sequelize) => {
+-    return queryInterface
+-      .createTable('<%= tableName %>', {
+-        id: {
+-          allowNull: false,
+-          autoIncrement: true,
+-          primaryKey: true,
+-          type: Sequelize.INTEGER
++      <% attributes.forEach(function(attribute) { %>
++        <%= attribute.fieldName %>: {
++          type: Sequelize.<%= attribute.dataFunction ? `${attribute.dataFunction.toUpperCase()}(Sequelize.${attribute.dataType.toUpperCase()})` : attribute.dataValues ? `${attribute.dataType.toUpperCase()}(${attribute.dataValues})` : attribute.dataType.toUpperCase() %>
+         },
++      <% }) %>
+ 
+-        <% attributes.forEach(function(attribute) { %>
+-          <%= attribute.fieldName %>: {
+-            type: Sequelize.<%= attribute.dataFunction ? `${attribute.dataFunction.toUpperCase()}(Sequelize.${attribute.dataType.toUpperCase()})` : attribute.dataValues ? `${attribute.dataType.toUpperCase()}(${attribute.dataValues})` : attribute.dataType.toUpperCase() %>
+-          },
+-        <% }) %>
++      <%= createdAt %>: {
++        allowNull: false,
++        type: Sequelize.DATE
++      },
+ 
+-        <%= createdAt %>: {
+-          allowNull: false,
+-          type: Sequelize.DATE
+-        },
+-
+-        <%= updatedAt %>: {
+-          allowNull: false,
+-          type: Sequelize.DATE
+-        }
+-      });
+-  },
+-
+-  down: (queryInterface, Sequelize) => {
+-    return queryInterface.dropTable('<%= tableName %>');
+-  }
+-};
++      <%= updatedAt %>: {
++        allowNull: false,
++        type: Sequelize.DATE
++      }
++    });
++}
++<%= '\n' %>
++export const down = (queryInterface, Sequelize) => {
++  return queryInterface.dropTable('<%= tableName %>')
++}
+diff --git a/node_modules/sequelize-cli/lib/assets/migrations/skeleton.js b/node_modules/sequelize-cli/lib/assets/migrations/skeleton.js
+index 9ef68be..51405ee 100644
+--- a/node_modules/sequelize-cli/lib/assets/migrations/skeleton.js
++++ b/node_modules/sequelize-cli/lib/assets/migrations/skeleton.js
+@@ -1,23 +1,19 @@
+-'use strict';
++export const up = (queryInterface, Sequelize) => {
++  /*
++    Add altering commands here.
++    Return a promise to correctly handle asynchronicity.
+ 
+-module.exports = {
+-  up: (queryInterface, Sequelize) => {
+-    /*
+-      Add altering commands here.
+-      Return a promise to correctly handle asynchronicity.
++    Example:
++    return queryInterface.createTable('users', { id: Sequelize.INTEGER });
++  */
++}
+ 
+-      Example:
+-      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
+-    */
+-  },
++export const down = (queryInterface, Sequelize) => {
++  /*
++    Add reverting commands here.
++    Return a promise to correctly handle asynchronicity.
+ 
+-  down: (queryInterface, Sequelize) => {
+-    /*
+-      Add reverting commands here.
+-      Return a promise to correctly handle asynchronicity.
+-
+-      Example:
+-      return queryInterface.dropTable('users');
+-    */
+-  }
+-};
++    Example:
++    return queryInterface.dropTable('users');
++  */
++}
+diff --git a/node_modules/sequelize-cli/lib/assets/models/model.js b/node_modules/sequelize-cli/lib/assets/models/model.js
+index 70007aa..975c166 100644
+--- a/node_modules/sequelize-cli/lib/assets/models/model.js
++++ b/node_modules/sequelize-cli/lib/assets/models/model.js
+@@ -1,18 +1,22 @@
+-'use strict';
++import Sequelize from 'sequelize'
+ 
+-module.exports = (sequelize, DataTypes) => {
+-  const <%= name %> = sequelize.define('<%= name %>', {
+-    <% attributes.forEach(function(attribute, index) { %>
+-      <%= attribute.fieldName %>: DataTypes.<%= attribute.dataFunction ? `${attribute.dataFunction.toUpperCase()}(DataTypes.${attribute.dataType.toUpperCase()})` : attribute.dataValues ? `${attribute.dataType.toUpperCase()}(${attribute.dataValues})` : attribute.dataType.toUpperCase() %>
+-      <%= (Object.keys(attributes).length - 1) > index ? ',' : '' %>
+-    <% }) %>
+-  }, {
+-    <%= underscored ? 'underscored: true,' : '' %>
+-  });
+-
+-  <%= name %>.associate = function(models) {
++<%= '\n' %>
++export default class <%= name %> extends Sequelize.Model {
++  static init(sequelize, DataTypes) {
++    return super.init({
++      <% attributes.forEach(function(attribute, index) { %>
++        <%= attribute.fieldName %>: DataTypes.<%= attribute.dataFunction ? `${attribute.dataFunction.toUpperCase()}(DataTypes.${attribute.dataType.toUpperCase()})` : attribute.dataValues ? `${attribute.dataType.toUpperCase()}(${attribute.dataValues})` : attribute.dataType.toUpperCase() %>
++        <%= (Object.keys(attributes).length - 1) > index ? ',' : '' %>
++      <% }) %>
++      },
++      {
++        sequelize,
++        <%= underscored ? 'underscored: true,' : '' %>
++      }
++    )
++  }
++  <%= '\n' %>
++  static associate(models) {
+     // associations can be defined here
+-  };
+-
+-  return <%= name %>;
+-};
++  }
++}
+diff --git a/node_modules/sequelize-cli/lib/assets/seeders/skeleton.js b/node_modules/sequelize-cli/lib/assets/seeders/skeleton.js
+index 989f222..837cae9 100644
+--- a/node_modules/sequelize-cli/lib/assets/seeders/skeleton.js
++++ b/node_modules/sequelize-cli/lib/assets/seeders/skeleton.js
+@@ -1,26 +1,22 @@
+-'use strict';
++export const up = (queryInterface, Sequelize) => {
++  /*
++    Add altering commands here.
++    Return a promise to correctly handle asynchronicity.
+ 
+-module.exports = {
+-  up: (queryInterface, Sequelize) => {
+-    /*
+-      Add altering commands here.
+-      Return a promise to correctly handle asynchronicity.
++    Example:
++    return queryInterface.bulkInsert('People', [{
++      name: 'John Doe',
++      isBetaMember: false
++    }], {});
++  */
++}
+ 
+-      Example:
+-      return queryInterface.bulkInsert('People', [{
+-        name: 'John Doe',
+-        isBetaMember: false
+-      }], {});
+-    */
+-  },
++export const down = (queryInterface, Sequelize) => {
++  /*
++    Add reverting commands here.
++    Return a promise to correctly handle asynchronicity.
+ 
+-  down: (queryInterface, Sequelize) => {
+-    /*
+-      Add reverting commands here.
+-      Return a promise to correctly handle asynchronicity.
+-
+-      Example:
+-      return queryInterface.bulkDelete('People', null, {});
+-    */
+-  }
+-};
++    Example:
++    return queryInterface.bulkDelete('People', null, {});
++  */
++}
+diff --git a/node_modules/sequelize-cli/lib/helpers/path-helper.js b/node_modules/sequelize-cli/lib/helpers/path-helper.js
+index a878253..ef80e53 100644
+--- a/node_modules/sequelize-cli/lib/helpers/path-helper.js
++++ b/node_modules/sequelize-cli/lib/helpers/path-helper.js
+@@ -67,7 +67,7 @@ module.exports = {
+   },
+ 
+   getModelPath(modelName) {
+-    return _path2.default.resolve(this.getModelsPath(), this.addFileExtension(modelName.toLowerCase()));
++    return _path2.default.resolve(this.getModelsPath(), this.addFileExtension(modelName));
+   },
+ 
+   resolve(packageName) {
