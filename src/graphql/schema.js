@@ -1,5 +1,7 @@
 import { gql } from 'apollo-server-micro'
 import { GraphQLDateTime, GraphQLTime, GraphQLDate } from 'graphql-iso-date'
+import userResolver from '../users/userResolver'
+import userSchema from '../users/userSchema'
 
 const TypeResolvers = {
   DateTime: GraphQLDateTime,
@@ -36,6 +38,6 @@ const RootResolver = {
   }
 }
 
-export const typeDefs = [RootQuery, ScalarSchema]
+export const typeDefs = [RootQuery, ScalarSchema, userSchema]
 
-export const resolvers = [RootResolver, TypeResolvers]
+export const resolvers = [RootResolver, TypeResolvers, userResolver]
