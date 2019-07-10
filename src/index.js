@@ -14,6 +14,7 @@ function authenticatedGraphql (req, res) {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    debug: process.env.NODE_ENV !== 'production',
   }).createHandler({ path: graphqlPath })
 
   return apolloServer(req, res)
