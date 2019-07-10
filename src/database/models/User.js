@@ -8,7 +8,16 @@ export default class User extends Sequelize.Model {
         lastName: DataTypes.STRING,
         location: DataTypes.STRING,
         bio: DataTypes.STRING,
-        username: DataTypes.STRING,
+        email: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true
+        },
+        username: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true
+        },
         timezone: DataTypes.STRING
       },
       {
@@ -18,6 +27,6 @@ export default class User extends Sequelize.Model {
   }
 
   static associate (models) {
-    // associations can be defined here
+    this.tokens = this.hasMany(models.Token)
   }
 }

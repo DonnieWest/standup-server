@@ -12,6 +12,11 @@ export const up = (queryInterface, Sequelize) => {
     lastName: {
       type: Sequelize.STRING
     },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true
+    },
     location: {
       type: Sequelize.STRING
     },
@@ -19,7 +24,9 @@ export const up = (queryInterface, Sequelize) => {
       type: Sequelize.STRING
     },
     username: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true
     },
     timezone: {
       type: Sequelize.STRING
