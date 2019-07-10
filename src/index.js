@@ -2,6 +2,7 @@ import dispatch from 'micro-route/dispatch'
 import { send } from 'micro'
 import { ApolloServer } from 'apollo-server-micro'
 import database from './database'
+import addHeaders from './util/addHeaders'
 import { typeDefs, resolvers } from './graphql/schema'
 
 const graphqlPath = '/'
@@ -31,9 +32,13 @@ function authenticatedGraphql (req, res) {
 database()
 
 export default function (req, res) {
-  dispatch()
-    .dispatch('*', 'OPTIONS', optionsHandler)
-    .dispatch(graphqlPath, ['POST', 'GET'], authenticatedGraphql)
-    .dispatch('/healthcheck', ['GET'], (req, res) => send(res, 200, 'Healthy'))
-    .otherwise((req, res) => send(res, 404, 'not found'))(req, res)
+  return addHeaders(
+    dispatch()
+      .dispatch('*', 'OPTIONS', optionsHandler)
+      .dispatch(graphqlPath, ['POST', 'GET'], authenticatedGraphql)
+      .dispatch('/healthcheck', ['GET'], (req, res) =>
+        send(res, 200, 'Healthy')
+      )
+      .otherwise((req, res) => send(res, 404, 'not found'))
+  )(req, res)
 }
