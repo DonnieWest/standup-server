@@ -1,10 +1,10 @@
 import { verifyToken } from './token'
 import { throwUnauthorizedError } from '../util/errors'
 
-export default async function authResolver (
+export default async function authResolver(
   _,
   { token: pToken },
-  { token: hToken }
+  { token: hToken },
 ) {
   const token = pToken || hToken
   if (token) {

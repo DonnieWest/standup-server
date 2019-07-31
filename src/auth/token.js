@@ -6,7 +6,7 @@ import User from '../database/models/User'
 const key = fs.readFileSync('./keys/jwtRS256.key')
 const pub = fs.readFileSync('./keys/jwtRS256.key.pub')
 
-export async function verifyToken (unverifiedToken) {
+export async function verifyToken(unverifiedToken) {
   try {
     const authenticationToken = unverifiedToken.startsWith('Bearer')
       ? unverifiedToken.slice(7)
@@ -29,16 +29,16 @@ export async function verifyToken (unverifiedToken) {
   }
 }
 
-export async function createSignedToken (user) {
+export async function createSignedToken(user) {
   const tokenForUser = await Token.create()
   await tokenForUser.setUser(user.id)
   await tokenForUser.save()
   return jwt.sign(tokenForUser.dataValues, key, {
-    algorithm: 'RS256'
+    algorithm: 'RS256',
   })
 }
 
-export async function removeToken (unverifiedToken) {
+export async function removeToken(unverifiedToken) {
   try {
     const authenticationToken = unverifiedToken.startsWith('Bearer')
       ? unverifiedToken.slice(7)

@@ -3,8 +3,8 @@ export const up = (queryInterface, Sequelize) => {
     type: Sequelize.INTEGER,
     reference: {
       model: 'Users',
-      key: 'id'
-    }
+      key: 'id',
+    },
   })
 }
 

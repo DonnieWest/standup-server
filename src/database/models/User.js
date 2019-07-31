@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 export default class User extends Sequelize.Model {
-  static init (sequelize, DataTypes) {
+  static init(sequelize, DataTypes) {
     return super.init(
       {
         firstName: DataTypes.STRING,
@@ -11,22 +11,22 @@ export default class User extends Sequelize.Model {
         email: {
           type: DataTypes.STRING,
           allowNull: false,
-          unique: true
+          unique: true,
         },
         username: {
           type: DataTypes.STRING,
           allowNull: false,
-          unique: true
+          unique: true,
         },
-        timezone: DataTypes.STRING
+        timezone: DataTypes.STRING,
       },
       {
-        sequelize
-      }
+        sequelize,
+      },
     )
   }
 
-  static associate (models) {
+  static associate(models) {
     this.tokens = this.hasMany(models.Token)
   }
 }

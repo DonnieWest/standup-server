@@ -7,7 +7,7 @@ import { typeDefs, resolvers } from './graphql/schema'
 
 const graphqlPath = '/'
 
-function optionsHandler (req, res) {
+function optionsHandler(req, res) {
   send(res, 200, '')
 }
 
@@ -31,14 +31,14 @@ function authenticatedGraphql (req, res) {
  */
 database()
 
-export default function (req, res) {
+export default function(req, res) {
   return addHeaders(
     dispatch()
       .dispatch('*', 'OPTIONS', optionsHandler)
       .dispatch(graphqlPath, ['POST', 'GET'], authenticatedGraphql)
       .dispatch('/healthcheck', ['GET'], (req, res) =>
-        send(res, 200, 'Healthy')
+        send(res, 200, 'Healthy'),
       )
-      .otherwise((req, res) => send(res, 404, 'not found'))
+      .otherwise((req, res) => send(res, 404, 'not found')),
   )(req, res)
 }

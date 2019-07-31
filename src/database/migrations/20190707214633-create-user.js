@@ -4,41 +4,41 @@ export const up = (queryInterface, Sequelize) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
     },
     firstName: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     lastName: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     location: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     bio: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     username: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     timezone: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     createdAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
     },
     updatedAt: {
       allowNull: false,
-      type: Sequelize.DATE
-    }
+      type: Sequelize.DATE,
+    },
   })
 }
 

@@ -2,7 +2,7 @@ import Sequelize from 'sequelize'
 import Models from './models'
 import config from './config'
 
-export default async function init () {
+export default async function init() {
   const sequelize = new Sequelize(
     config.database,
     config.username,
@@ -16,9 +16,9 @@ export default async function init () {
         max: 5,
         min: 0,
         acquire: 30000,
-        idle: 10000
-      }
-    }
+        idle: 10000,
+      },
+    },
   )
 
   // Run `.associate` if it exists,

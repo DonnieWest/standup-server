@@ -10,23 +10,23 @@ if (!token) {
 
 const mailgunEndpoint = `https://api:${token}@api.mailgun.net/v3/mail.thestandup.app`
 
-function sendEmail (to, subject, body) {
+function sendEmail(to, subject, body) {
   const params = new URLSearchParams()
   params.append('from', 'no-reply@mail.thestandup.app')
   params.append('to', to)
   params.append('subject', subject)
   params.append('text', body)
 
-  return fetch(`${mailgunEndpoint}/messages`, {
+  return fetch(`${getMailgunEndpoint()}/messages`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: params
+    body: params,
   })
 }
 
-function sendRegistrationEmail (to, username, token) {
+function sendRegistrationEmail(to, username, token) {
   const body = `
     Hi there 👋 ${to},
 
@@ -43,7 +43,7 @@ function sendRegistrationEmail (to, username, token) {
   return sendEmail(to, subject, body)
 }
 
-function sendLoginEmail (to, token) {
+function sendLoginEmail(to, token) {
   const body = `
     Hi there 👋 ${to},
 
@@ -62,7 +62,7 @@ function sendLoginEmail (to, token) {
 
 export default {
   sendLoginEmail,
-  sendRegistrationEmail
+  sendRegistrationEmail,
 }
 
 export { sendLoginEmail, sendRegistrationEmail }

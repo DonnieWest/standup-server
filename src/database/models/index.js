@@ -3,5 +3,5 @@ import Token from './Token'
 
 export default {
   User,
-  Token
+  Token,
 }

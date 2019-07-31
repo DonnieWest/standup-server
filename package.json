@@ -12,19 +12,47 @@
     "start": "node -r esm ./node_modules/.bin/micro ./src/index.js",
     "dev": "node -r esm ./node_modules/.bin/micro-dev -c ./src/index.js",
     "seed": "node -r esm ./src/util/seed.js",
-    "test": "npm run lint && NODE_ENV=test nyc --check-coverage --statements 85 --branches 85 --functions 85 --lines 85 ava",
-    "format": "prettier-standard '{src,test}/**/*.js'",
+    "test": "npm run lint && jest",
+    "format": "prettier-eslint --write '{src,__tests__}/**/*.js'",
     "db:drop": "node -r esm ./node_modules/.bin/sequelize db:drop",
     "db:seed": "node -r esm ./node_modules/.bin/sequelize db:seed:all",
     "db:setup": "node -r esm ./node_modules/.bin/sequelize db:create",
     "db:migrate": "node -r esm ./node_modules/.bin/sequelize db:migrate",
     "db:cli": "node -r esm ./node_modules/.bin/sequelize",
     "postinstall": "patch-package",
-    "lint": "standard '{src,test}/**/*.js'"
+    "lint": "eslint '{src,__tests__}/**/*.js'"
   },
-  "ava": {
-    "require": [
-      "esm"
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/helpers"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard",
+      "prettier"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    }
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "semi": false,
+    "singleQuote": true
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
     ]
   },
   "repository": {
@@ -39,6 +67,7 @@
   "homepage": "https://github.com/donniewest/standup-server#readme",
   "dependencies": {
     "apollo-server-micro": "^2.6.9",
+    "eslint-plugin-prettier": "^3.1.0",
     "esm": "^3.2.25",
     "graphql": "^14.4.2",
     "graphql-iso-date": "^3.6.1",
@@ -52,14 +81,22 @@
     "sequelize": "^5.10.0"
   },
   "devDependencies": {
-    "ava": "^2.2.0",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-jest": "^24.8.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.8.0",
     "micro-dev": "^3.0.0",
     "node-fetch": "^2.6.0",
-    "nyc": "^14.1.1",
     "prettier": "^1.18.2",
-    "prettier-standard": "^9.1.1",
-    "sequelize-cli": "^5.5.0",
-    "standard": "^13.0.2",
-    "test-listen": "^1.1.0"
+    "prettier-eslint": "^9.0.0",
+    "prettier-eslint-cli": "^5.0.0",
+    "sequelize-cli": "^5.5.0"
   }
 }

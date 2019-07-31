@@ -6,7 +6,7 @@ import userSchema from '../users/userSchema'
 const TypeResolvers = {
   DateTime: GraphQLDateTime,
   Time: GraphQLTime,
-  Date: GraphQLDate
+  Date: GraphQLDate,
 }
 
 const ScalarSchema = gql`
@@ -27,15 +27,15 @@ const RootQuery = gql`
 
 const RootResolver = {
   Query: {
-    healthCheck () {
+    healthCheck() {
       return true
-    }
+    },
   },
   Mutation: {
-    healthCheck () {
+    healthCheck() {
       return true
-    }
-  }
+    },
+  },
 }
 
 export const typeDefs = [RootQuery, ScalarSchema, userSchema]

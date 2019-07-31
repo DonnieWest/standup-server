@@ -10,11 +10,11 @@ export default {
     getCurrentUser: pipeResolvers(authResolver, ({ user }) => {
       return user
     }),
-    async getUser (_, { username }) {
+    async getUser(_, { username }) {
       const user = User.findOne({ username })
       delete user.email
       return user
-    }
+    },
   },
   User: {},
   Mutation: {
@@ -22,9 +22,9 @@ export default {
       await user.update(params)
       return { ...user, ...params }
     }),
-    async login (_, { email, username }) {
+    async login(_, { email, username }) {
       const user = await User.findOne({
-        where: { email: email.toLowerCase().trim() }
+        where: { email: email.toLowerCase().trim() },
       })
       if (!user) {
         throwInvalidLoginError()
@@ -41,11 +41,11 @@ export default {
         return false
       }
     }),
-    async register (_, { email, username }) {
+    async register(_, { email, username }) {
       try {
         const user = await User.create({
           email: email.toLowerCase().trim(),
-          username: username.toLowerCase().trim()
+          username: username.toLowerCase().trim(),
         })
         const token = await createSignedToken(user)
         await sendRegistrationEmail(email, username, token)
@@ -54,6 +54,6 @@ export default {
         console.log(e)
         throw new Error('User already exists')
       }
-    }
-  }
+    },
+  },
 }
