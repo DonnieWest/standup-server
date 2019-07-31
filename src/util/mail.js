@@ -4,11 +4,19 @@ import { URLSearchParams } from 'url'
 const token = process.env.MAILGUN_TOKEN
 const host = process.env.HOST || `http://localhost:${process.env.PORT || 3000}`
 
-if (!token) {
-  throw new Error('MAILGUN_TOKEN env variable not set!')
-}
+let mailgunEndpoint
 
-const mailgunEndpoint = `https://api:${token}@api.mailgun.net/v3/mail.thestandup.app`
+function getMailgunEndpoint() {
+  if (!token) {
+    throw new Error('MAILGUN_TOKEN env variable not set!')
+  }
+
+  if (!mailgunEndpoint) {
+    mailgunEndpoint = `https://api:${token}@api.mailgun.net/v3/mail.thestandup.app`
+  }
+
+  return mailgunEndpoint
+}
 
 function sendEmail(to, subject, body) {
   const params = new URLSearchParams()
