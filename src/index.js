@@ -11,18 +11,14 @@ function optionsHandler(req, res) {
   send(res, 200, '')
 }
 
-function authenticatedGraphql (req, res) {
-  const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    debug: process.env.NODE_ENV !== 'production',
-    context: ({ req }) => ({
-      token: req.headers['authorization']
-    })
-  }).createHandler({ path: graphqlPath })
-
-  return apolloServer(req, res)
-}
+const authenticatedGraphqlHandler = new ApolloServer({
+  typeDefs,
+  resolvers,
+  debug: process.env.NODE_ENV !== 'production',
+  context: ({ req }) => ({
+    token: req.headers['authorization'],
+  }),
+}).createHandler({ path: graphqlPath })
 
 /*
  * Initializing this here without awaiting
@@ -35,7 +31,7 @@ export default function(req, res) {
   return addHeaders(
     dispatch()
       .dispatch('*', 'OPTIONS', optionsHandler)
-      .dispatch(graphqlPath, ['POST', 'GET'], authenticatedGraphql)
+      .dispatch(graphqlPath, ['POST', 'GET'], authenticatedGraphqlHandler)
       .dispatch('/healthcheck', ['GET'], (req, res) =>
         send(res, 200, 'Healthy'),
       )
